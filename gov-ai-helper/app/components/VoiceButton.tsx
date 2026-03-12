@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { FiMic, FiAlertCircle } from 'react-icons/fi';
 import { useLanguage } from '@/app/context/LanguageContext';
 
 interface VoiceButtonProps {
@@ -10,10 +11,11 @@ interface VoiceButtonProps {
 export default function VoiceButton({ onTranscript }: VoiceButtonProps) {
   const { t } = useLanguage();
   const [isListening, setIsListening] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const startListening = () => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Speech recognition is not supported in your browser');
+      setError('Speech recognition is not supported in your browser');
       return;
     }
 
@@ -22,6 +24,7 @@ export default function VoiceButton({ onTranscript }: VoiceButtonProps) {
 
     recognition.onstart = () => {
       setIsListening(true);
+      setError(null);
     };
 
     recognition.onresult = (event: any) => {
@@ -42,25 +45,45 @@ export default function VoiceButton({ onTranscript }: VoiceButtonProps) {
       setIsListening(false);
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event: any) => {
       setIsListening(false);
+      setError(`Error: ${event.error}`);
     };
 
     recognition.start();
   };
 
   return (
-    <button
-      onClick={startListening}
-      disabled={isListening}
-      className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white text-base sm:text-lg transition-colors ${
-        isListening
-          ? 'bg-red-500 hover:bg-red-600 animate-pulse'
-          : 'bg-teal-500 hover:bg-teal-600'
-      }`}
-    >
-      <span className="text-xl sm:text-2xl">🎤</span>
-      <span>{isListening ? 'Listening...' : t('speak')}</span>
-    </button>
+    <div className="w-full">
+      <button
+        onClick={startListening}
+        disabled={isListening}
+        className={`w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-bold text-white text-base sm:text-lg transition-all shadow-md hover:shadow-lg disabled:shadow-none ${
+          isListening
+            ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 animate-pulse'
+            : 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700'
+        }`}
+      >
+        <FiMic className={`text-2xl sm:text-3xl ${isListening ? 'animate-bounce' : ''}`} />
+        <span>{isListening ? 'Listening... Speak now!' : t('speak')}</span>
+        {isListening && <span className="ml-auto animate-pulse">●</span>}
+      </button>
+      
+      {error && (
+        <div className="mt-3 p-3 bg-red-50 border border-red-300 rounded-lg">
+          <p className="text-sm text-red-700 font-medium flex items-center gap-2">
+            <FiAlertCircle /> {error}
+          </p>
+        </div>
+      )}
+
+      {isListening && (
+        <div className="mt-3 p-3 bg-blue-50 border border-blue-300 rounded-lg">
+          <p className="text-xs sm:text-sm text-blue-700 font-medium flex items-center gap-2">
+            <FiMic className="animate-spin" /> Speak clearly and wait for the tone to stop
+          </p>
+        </div>
+      )}
+    </div>
   );
 }

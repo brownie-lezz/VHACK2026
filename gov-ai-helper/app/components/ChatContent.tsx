@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { FiHelpCircle, FiHourglass } from 'react-icons/fi';
 import ChatMessage from './ChatMessage';
 import AnswerPanel from './AnswerPanel';
 import InputArea from './InputArea';
@@ -35,18 +36,28 @@ export default function ChatContent() {
 
   if (!aiResponse) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-600 text-lg">Loading...</p>
+          <FiHourglass className="text-5xl mb-4 animate-pulse mx-auto text-teal-500" />
+          <p className="text-slate-600 text-lg font-medium">Loading your answer...</p>
+          <p className="text-slate-500 text-sm mt-2">This should only take a moment</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col">
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto max-w-4xl mx-auto w-full px-4 py-6 sm:py-8">
+      <div className="flex-1 overflow-y-auto max-w-4xl mx-auto w-full px-4 py-8 sm:py-10">
+        {/* Header info */}
+        <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+          <p className="text-sm text-slate-700 flex items-start gap-2">
+            <FiHelpCircle className="text-lg flex-shrink-0 mt-0.5" />
+            <span>You can ask follow-up questions below to get more detailed information.</span>
+          </p>
+        </div>
+
         {/* Chat Messages */}
         {messages.map((message) => (
           <ChatMessage key={message.id} type={message.type} content={message.content} />
@@ -54,7 +65,7 @@ export default function ChatContent() {
 
         {/* Answer Panel */}
         {aiResponse && (
-          <div className="mt-8 mb-8">
+          <div className="mt-10 mb-8 animate-fade-in">
             <AnswerPanel response={aiResponse} onAskAnother={handleAskAnother} />
           </div>
         )}
