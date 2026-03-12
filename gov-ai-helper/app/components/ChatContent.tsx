@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiHelpCircle, FiHourglass } from 'react-icons/fi';
+import { FiHelpCircle, FiClock } from 'react-icons/fi';
 import ChatMessage from './ChatMessage';
 import AnswerPanel from './AnswerPanel';
 import InputArea from './InputArea';
@@ -38,7 +38,7 @@ export default function ChatContent() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col items-center justify-center">
         <div className="text-center">
-          <FiHourglass className="text-5xl mb-4 animate-pulse mx-auto text-teal-500" />
+          <FiClock className="text-5xl mb-4 animate-pulse mx-auto text-teal-500" />
           <p className="text-slate-600 text-lg font-medium">Loading your answer...</p>
           <p className="text-slate-500 text-sm mt-2">This should only take a moment</p>
         </div>

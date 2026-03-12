@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FiMic, FiEdit, FiArrowRight, FiTag, FiHelpCircle, FiInfo, FiLock, FiGlobe } from 'react-icons/fi';
+import { FiMic, FiEdit, FiArrowRight, FiHelpCircle, FiInfo, FiLock, FiGlobe } from 'react-icons/fi';
 import { FiLoader } from 'react-icons/fi';
 import VoiceButton from './VoiceButton';
 import { useLanguage } from '@/app/context/LanguageContext';
@@ -41,14 +41,6 @@ const exampleQuestions = {
   ],
 };
 
-const commonQuestions = {
-  en: ['Financial Aid', 'Medical Help', 'Housing Support'],
-  bm: ['Bantuan Kewangan', 'Bantuan Perubatan', 'Sokongan Perumahan'],
-  id: ['Bantuan Keuangan', 'Bantuan Medis', 'Dukungan Perumahan'],
-  fil: ['Tulong sa Pananalapi', 'Tulong Medikal', 'Suporta sa Malalaking Bahay'],
-  vi: ['Trợ cấp Tài chính', 'Trợ giúp Y tế', 'Hỗ trợ Nhà ở'],
-  zh: ['财政援助', '医疗帮助', '住房支持'],
-};
 
 export default function HomeContent() {
   const router = useRouter();
@@ -179,25 +171,6 @@ export default function HomeContent() {
                     <FiArrowRight className="text-teal-600" />
                     {question}
                   </span>
-                </button>
-              )
-            )}
-          </div>
-        </div>
-
-        {/* Common Questions */}
-        <div className="mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-            <FiTag /> {t('commonQuestions')}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-            {commonQuestions[language as keyof typeof commonQuestions].map(
-              (question, index) => (
-                <button
-                  key={index}
-                  className="px-6 py-5 sm:py-6 bg-gradient-to-br from-slate-100 to-slate-50 hover:from-slate-200 hover:to-slate-100 border-2 border-slate-300 hover:border-slate-400 rounded-lg text-sm sm:text-base text-slate-900 font-semibold transition-all shadow-sm hover:shadow-md"
-                >
-                  {question}
                 </button>
               )
             )}
